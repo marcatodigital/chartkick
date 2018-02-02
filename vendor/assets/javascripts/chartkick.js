@@ -121,7 +121,6 @@
 
       if (opts.annotations) {
         $.each( opts.annotations, function( key, value ) {
-          // alert( JSON.stringify(key) + ": " + JSON.stringify(value));
           addLineAnnotation(options, value.title, value.colour, value.orientation, value.coordinate);
         });
       }
