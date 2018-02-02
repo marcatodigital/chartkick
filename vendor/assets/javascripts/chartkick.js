@@ -105,7 +105,7 @@
     return false;
   }
 
-  function jsOptionsFunc(defaultOptions, hideLegend, setTitle, setMin, setMax, setStacked, setXtitle, setYtitle) {
+  function jsOptionsFunc(defaultOptions, hideLegend, setTitle, setMin, setMax, setStacked, setXtitle, setYtitle, addLineAnnotation) {
     return function (chart, opts, chartOptions) {
       var series = chart.data;
       var options = merge({}, defaultOptions);
@@ -117,6 +117,13 @@
 
       if (opts.title) {
         setTitle(options, opts.title);
+      }
+
+      if (opts.annotations) {
+        $.each( opts.annotations, function( key, value ) {
+          // alert( JSON.stringify(key) + ": " + JSON.stringify(value));
+          addLineAnnotation(options, value.title, value.colour, value.orientation, value.coordinate);
+        });
       }
 
       // min
@@ -1118,7 +1125,7 @@
           options.scales.yAxes[0].scaleLabel.labelString = title;
         };
 
-        var addLineAnnotation = function(options, title, colour, coordinate, orientation) {
+        var addLineAnnotation = function(options, title, colour, orientation, coordinate) {
           var scaleID = orientation == 'vertical' ? 'x-axis-0' : 'y-axis-0';
 
           var annotation = {
@@ -1202,7 +1209,7 @@
           };
         };
 
-        var jsOptions = jsOptionsFunc(merge(baseOptions, defaultOptions), hideLegend, setTitle, setMin, setMax, setStacked, setXtitle, setYtitle);
+        var jsOptions = jsOptionsFunc(merge(baseOptions, defaultOptions), hideLegend, setTitle, setMin, setMax, setStacked, setXtitle, setYtitle, addLineAnnotation);
 
         var createDataTable = function (chart, options, chartType) {
           var datasets = [];
